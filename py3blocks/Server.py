@@ -1,4 +1,3 @@
-# from .Block import Block
 from .BlockProvider import BlockProvider
 from .ConfigParser import ConfigParser
 from .ConnectionHandler import ConnectionHandler
@@ -50,11 +49,6 @@ class Server():
         blocks = [section for section in sections if not section.startswith('bar/')]
         bars = [section for section in sections if section.startswith('bar/')]
 
-        # for block in blocks:
-        #     if block not in self.__blocks:
-        #         self.__blocks[block] = Block(self, block)
-
-        #     self.__blocks[block].reconfigure(self.__configParser, block)
         for block in blocks:
             if block not in self.__blocks:
                 self.__blocks[block] = BlockProvider(self, block)
@@ -82,7 +76,6 @@ class Server():
     def close(self):
         self.__server.close()
         for block in list(self.__blocks):
-            # self.__blocks[block].cancel()
             self.__blocks[block].abort()
             del self.__blocks[block]
 
