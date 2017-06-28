@@ -19,6 +19,8 @@ def parse_args():
                         type=int,
                         required=True)
 
+    parser.add_argument('--config', '-c')
+
     return parser.parse_args()
 
 
@@ -30,7 +32,7 @@ def main():
     if args.server:
         sock = py3blocks.Networking.create_server_sock(
             (args.address, args.port))
-        server = py3blocks.Server(loop, sock)
+        server = py3blocks.Server(loop, sock, [args.config])
         server.run()
 
         try:

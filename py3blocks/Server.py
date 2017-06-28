@@ -7,12 +7,13 @@ import os
 
 class Server():
 
-    def __init__(self, loop, sock):
+    def __init__(self, loop, sock, config_files=[]):
         self.__loop = loop
         self.__sock = sock
         self.__connections = []
         self.__blocks = {}
         self.__configParser = ConfigParser(strict=False)
+        self.__config_files = config_files
 
     def run(self):
         self.readConfig()
@@ -42,7 +43,7 @@ class Server():
         pass
 
     def readConfig(self):
-        self.__configParser.read(['i3blocks.conf', os.path.expanduser('~/.i3blocks.conf')])
+        self.__configParser.read(self.list_config_files())
 
         sections = self.__configParser.sections()
 
@@ -59,6 +60,20 @@ class Server():
                 self.__blocks[block] = BlockProvider(self, block)
 
                 self.__blocks[block].reconfigure(self.__configParser)
+
+    def list_config_files(self):
+        l = [
+            '~/.i3blocks.conf',
+            'i3blocks.conf',
+        ]
+
+        for f in self.__config_files:
+            if f is not None:
+                l.append(f)
+
+        files = [os.path.expanduser(f) for f in l]
+
+        return files
 
     def requireUpdate(self, block=None):
         for connection in self.__connections:
