@@ -2,6 +2,7 @@ import asyncio
 from .JSONEncoder import JSONEncoder
 
 import json
+from sys import stdout
 
 class ClientConnectionHandler(asyncio.Protocol):
 
@@ -23,3 +24,4 @@ class ClientConnectionHandler(asyncio.Protocol):
             for line in lines:
                 if line.startswith(',['):
                     print(line)
+                    stdout.flush()
