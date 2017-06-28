@@ -3,6 +3,7 @@ import configparser
 
 from itertools import chain
 
+
 class ConfigParser(configparser.ConfigParser):
 
     class Interpolation(configparser.Interpolation):

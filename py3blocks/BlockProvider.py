@@ -18,7 +18,7 @@ class BlockUpdate():
 
     def _build_env(self):
         env = os.environ.copy()
-        for k,v in self.__properties.items():
+        for k, v in self.__properties.items():
             if v is not None:
                 prop_name = 'BLOCK_{}'.format(str(k)).upper()
                 env[prop_name] = str(v)
@@ -38,13 +38,12 @@ class BlockUpdate():
             properties['full_text'] = ''
             if properties['_label'] is not None and len(properties['_label']) > 0:
                 properties['full_text'] = properties['_label'] + ' '
-            properties['full_text'] +=  full_text
+            properties['full_text'] += full_text
         if len(short_text) > 0:
             properties['short_text'] = short_text
         if len(color) > 0:
             properties['color'] = color
         self.__loop.call_soon(self.__callback, start_time, properties)
-
 
     async def run(self):
         if self.isRunning():
@@ -113,6 +112,7 @@ class BlockUpdate():
             self.__aborted = True
             self.__process.terminate()
 
+
 class BlockProvider():
 
     class BlockProperties(dict):
@@ -141,7 +141,7 @@ class BlockProvider():
 
         def read(self, configParser):
             changed = False
-            for k,v in self.property_names.items():
+            for k, v in self.property_names.items():
                 value = configParser.get(self['name'], v, fallback=None)
                 if value != self[k]:
                     changed = True

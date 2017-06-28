@@ -1,6 +1,7 @@
 import contextlib
 import socket
 
+
 class Networking():
 
     def has_dual_stack():
@@ -18,7 +19,6 @@ class Networking():
         except socket.error:
             pass
         return False
-
 
     def create_server_sock(address,
                            queue_size=5,

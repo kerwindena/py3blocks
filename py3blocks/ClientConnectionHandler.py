@@ -4,6 +4,7 @@ from .JSONEncoder import JSONEncoder
 import json
 from sys import stdout
 
+
 class ClientConnectionHandler(asyncio.Protocol):
 
     def __init__(self, client):

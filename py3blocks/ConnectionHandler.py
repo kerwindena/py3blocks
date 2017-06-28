@@ -3,6 +3,7 @@ from .JSONEncoder import JSONEncoder
 
 import json
 
+
 class ConnectionHandler(asyncio.Protocol):
 
     def __init__(self, server):
