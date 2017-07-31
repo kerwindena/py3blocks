@@ -2,6 +2,7 @@ from .BlockProvider import BlockProvider
 from .ConfigParser import ConfigParser
 from .ConnectionHandler import ConnectionHandler
 
+import asyncio
 import os
 
 
@@ -80,5 +81,6 @@ class Server():
             self.__blocks[block].abort()
             del self.__blocks[block]
 
-    async def wait_closed(self):
-        await self.__server.wait_closed()
+    @asyncio.coroutine
+    def wait_closed(self):
+        yield from self.__server.wait_closed()

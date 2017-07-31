@@ -16,15 +16,16 @@ class Client:
         #self.__loop.call_soon(self.connect)
         self.__loop.run_until_complete(self.connect())
 
-    async def connect(self):
+    @asyncio.coroutine
+    def connect(self):
         try:
-            # reader, writer = await asyncio.open_connection(port=self.__port, server_hostname=self.__address)
-            self.__client = await self.__loop.create_connection(lambda: ClientConnectionHandler(self),
-                                                                port=self.__port,
-                                                                server_hostname=self.__address)
+            # reader, writer = yield from asyncio.open_connection(port=self.__port, server_hostname=self.__address)
+            self.__client = yield from self.__loop.create_connection(lambda: ClientConnectionHandler(self),
+                                                                     port=self.__port,
+                                                                     server_hostname=self.__address)
         except OSError as e:
             # TODO: Log connection error
-            await asyncio.sleep(15)
+            yield from asyncio.sleep(15)
             self.__loop.create_task(self.connect())
             return
 
@@ -33,7 +34,8 @@ class Client:
     def close(self):
         pass
 
-    async def wait_closed(self):
+    @asyncio.coroutine
+    def wait_closed(self):
         pass
 
     def connection_lost(self, transport, exc):

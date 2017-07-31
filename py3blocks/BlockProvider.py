@@ -45,7 +45,8 @@ class BlockUpdate():
             properties['color'] = color
         self.__loop.call_soon(self.__callback, start_time, properties)
 
-    async def run(self):
+    @asyncio.coroutine
+    def run(self):
         if self.isRunning():
             raise Exception('Blockupdate is already running')
 
@@ -56,7 +57,7 @@ class BlockUpdate():
             self.__return(start_time)
             return
 
-        self.__process = await asyncio.create_subprocess_shell(
+        self.__process = yield from asyncio.create_subprocess_shell(
             cmd,
             stdout=asyncio.subprocess.PIPE,
             stderr=None,
@@ -85,7 +86,7 @@ class BlockUpdate():
             #    asyncio.wait_for(self.__process.communicate(),
             #                     self.__timeout,
             #                     loop=self.__loop))
-            res, _ = await asyncio.wait_for(
+            res, _ = yield from asyncio.wait_for(
                 self.__process.communicate(),
                 self.__timeout,
                 loop=self.__loop)

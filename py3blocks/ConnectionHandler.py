@@ -1,6 +1,7 @@
 import asyncio
 from .JSONEncoder import JSONEncoder
 
+import asyncio
 import json
 
 
@@ -30,8 +31,9 @@ class ConnectionHandler(asyncio.Protocol):
         if block is None or block in self.__blocks.values():
             self.__update = self.__server.get_loop().create_task(self.update())
 
-    async def update(self):
-        await asyncio.sleep(0.08)
+    @asyncio.coroutine
+    def update(self):
+        yield from asyncio.sleep(0.08)
         self.__update = None
         self.writeln(',' + json.dumps(self, cls=JSONEncoder))
 
