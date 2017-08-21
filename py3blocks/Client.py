@@ -32,7 +32,7 @@ class Client:
         #print(reader,writer)
 
     def close(self):
-        pass
+        self.__loop.stop()
 
     @asyncio.coroutine
     def wait_closed(self):

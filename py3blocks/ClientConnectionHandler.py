@@ -20,9 +20,13 @@ class ClientConnectionHandler(asyncio.Protocol):
         self.__client.connection_lost(self.__transport, exc)
 
     def data_received(self, data):
-        lines = data.decode().split('\n')
-        if len(lines) > 1:
-            for line in lines:
-                if line.startswith(',['):
-                    print(line)
-                    stdout.flush()
+        try:
+            lines = data.decode().split('\n')
+            if len(lines) > 1:
+                for line in lines:
+                    if line.startswith(',['):
+                        print(line)
+                        stdout.flush()
+
+        except IOError:
+            self.__client.close()
