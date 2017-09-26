@@ -112,47 +112,15 @@ class BlockUpdate():
         if self.isRunning():
             self.__aborted = True
             self.__process.terminate()
+from .BlockProperties import BlockProperties
 
 
 class BlockProvider():
 
-    class BlockProperties(dict):
-        property_names = {
-            'align': 'align',
-            'color': 'color',
-            'full_text': 'full_text',
-            'instance': 'instance',
-            'min_width': 'min_width',
-            'seperator': 'seperator',
-            'seperator_block_width': 'seperator_block_width',
-            'short_text': 'short_text',
-            'urgent': 'urgent',
-
-            '_command': 'command',
-            '_interval': 'interval',
-            '_label': 'label',
-            '_signal': 'signal',
-            '_timeout': 'timeout',
-        }
-
-        def __init__(self, name):
-            for prop in self.property_names:
-                self[prop] = None
-            self['name'] = name
-
-        def read(self, configParser):
-            changed = False
-            for k, v in self.property_names.items():
-                value = configParser.get(self['name'], v, fallback=None)
-                if value != self[k]:
-                    changed = True
-                    self[k] = value
-            return changed
-
     def __init__(self, server, name):
         self.__server = server
 
-        self.__properties = self.BlockProperties(name)
+        self.__properties = BlockProperties(name)
 
         self.block = self.__properties
 
