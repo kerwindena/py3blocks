@@ -12,7 +12,7 @@ class JSONEncoder(json.JSONEncoder):
                     return None
                 return {k: v for k, v in o.block.items()
                         if not k.startswith('_') and v is not None and len(str(v)) > 0}
-            return [x for x in o.get_blocks().values() if self.default(x) is not None]
+            return [x for x in o.get_blocks() if self.default(x) is not None]
         except AttributeError:
             pass
         return json.JSONEncoder.default(self, o)

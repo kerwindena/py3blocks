@@ -15,6 +15,7 @@ class Server():
         self.__blocks = {}
         self.__configParser = ConfigParser(strict=False)
         self.__config_files = config_files
+        self.__default_block_order = []
 
     def run(self):
         self.readConfig()
@@ -33,6 +34,12 @@ class Server():
     def get_connections(self):
         for connection in self.__connections:
             yield connection
+
+    def get_blocks(self):
+        return self.__blocks.copy()
+
+    def get_default_block_order(self):
+        return self.__default_block_order.copy()
 
     def add_connection(self, connection):
         self.__connections.append(connection)
@@ -56,6 +63,7 @@ class Server():
                 self.__blocks[block] = BlockProvider(self, block)
 
                 self.__blocks[block].reconfigure(self.__configParser)
+        self.__default_block_order = blocks
 
     def list_config_files(self):
         l = [

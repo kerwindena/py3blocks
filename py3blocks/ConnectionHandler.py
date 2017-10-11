@@ -9,7 +9,7 @@ class ConnectionHandler(asyncio.Protocol):
 
     def __init__(self, server):
         self.__server = server
-        self.__blocks = server._Server__blocks
+        self.__block_order = server.get_default_block_order()
         self.__update = None
 
     def connection_made(self, transport):
@@ -28,7 +28,7 @@ class ConnectionHandler(asyncio.Protocol):
         if self.__update is not None:
             return
 
-        if block is None or block in self.__blocks.values():
+        if block is None or self.has_block(block):
             self.__update = self.__server.get_loop().create_task(self.update())
 
     @asyncio.coroutine
@@ -41,10 +41,11 @@ class ConnectionHandler(asyncio.Protocol):
         print(data)
 
     def has_block(self, block):
-        return block in self.__blocks.values()
+        return block.block['name'] in self.__block_order
 
     def get_blocks(self):
-        return self.__blocks.copy()
+        blocks = self.__server.get_blocks()
+        return [blocks[block_name] for block_name in self.__block_order]
 
     def writeln(self, data):
         self.write(data)
