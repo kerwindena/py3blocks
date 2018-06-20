@@ -67,3 +67,14 @@ def test_job_no_start(loop):
         loop.run(1)
 
     action.assert_not_called()
+
+
+@pytest.mark.parametrize("sched_time", [0, 1, 1e24])
+def test_get_scheduled_time(loop, sched_time):
+    '''
+    Test the ``get_scheduled_time`` method returns the proper value.
+    '''
+    action = Mock()
+    job = Job(loop, action, sched_time)
+
+    assert job.get_scheduled_time() == sched_time
