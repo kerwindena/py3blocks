@@ -11,6 +11,7 @@ install:
 
 script:
 - pytest --cov
+- pycodestyle --exclude='old' py3blocks *.py
 
 after_success:
 - codecov
